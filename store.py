@@ -1,15 +1,11 @@
-from abc import ABC, abstractmethod
-
-
-# Базовый класс для товаро
-class Product(ABC):
+# Базовый класс для товаров
+class Product:
     def __init__(self, name, price):
         self.name = name
         self.price = price
 
-    @abstractmethod
     def get_info(self):
-        pass
+        return f"{self.name}, Цена: {self.price} руб."
 
 
 # Разные категории товаров
@@ -31,6 +27,15 @@ class Clothing(Product):
         return f"Одежда: {self.name}, Размер: {self.size}, Цена: {self.price} руб."
 
 
+class Shoes(Product):
+    def __init__(self, name, price, brand):
+        super().__init__(name, price)
+        self.brand = brand
+
+    def get_info(self):
+        return f"Обувь: {self.name}, Бренд: {self.brand}, Цена: {self.price} руб."
+
+
 # Класс пользователя с балансом и корзиной
 class User:
     def __init__(self, name, balance):
@@ -48,10 +53,14 @@ class User:
         if total > self.balance:
             print("Недостаточно средств!")
         else:
-            self.balance -= total
-            self.history.extend(self.cart)
-            self.cart.clear()
-            print("Покупка успешно завершена!")
+            confirmation = input("Подтвердите покупку (да/нет): ").strip().lower()
+            if confirmation == "да":
+                self.balance -= total
+                self.history.extend(self.cart)
+                self.cart.clear()
+                print("Покупка успешно завершена!")
+            else:
+                print("Покупка отменена.")
 
     def show_balance(self):
         print(f"Ваш баланс: {self.balance} руб.")
@@ -64,7 +73,16 @@ class User:
 # Главное меню
 if __name__ == "__main__":
     user = User("Алексей", 5000)
-    products = [Electronics("Смартфон", 3000, "Samsung"), Clothing("Футболка", 1500, "L")]
+    products = [
+        Electronics("Смартфон", 3000, "Samsung"),
+        Clothing("Футболка Adidas", 1200, "M"),
+        Clothing("Футболка Nike", 1400, "L"),
+        Clothing("Футболка Puma", 1300, "XL"),
+        Shoes("Кроссовки Reebok", 5000, "Reebok"),
+        Shoes("Кроссовки Nike", 6000, "Nike"),
+        Shoes("Кроссовки Adidas", 5500, "Adidas"),
+        Clothing("Шорты Puma", 2000, "L")
+    ]
 
     while True:
         print("\n1. Посмотреть товары\n2. Корзина\n3. Баланс\n4. Пополнить счет\n5. История покупок\n6. Выйти")
