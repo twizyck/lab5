@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-# Базовый класс для товаров
+# Базовый класс для товаро
 class Product(ABC):
     def __init__(self, name, price):
         self.name = name
